@@ -1,10 +1,13 @@
 import { useCart } from '../../context/CartContext';
+import { FiTrash2 } from 'react-icons/fi';
 
 const Cart = () => {
-  const { cartItems, removeFromCart } = useCart();
+  const { cartItems, removeFromCart, updateQuantity } = useCart();
 
   const getTotal = () => {
-    return cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2);
+    return cartItems
+      .reduce((acc, item) => acc + item.price * item.quantity, 0)
+      .toFixed(2);
   };
 
   if (cartItems.length === 0) {
@@ -20,15 +23,33 @@ const Cart = () => {
             <img src={item.image} alt={item.name} className="w-20 h-20 rounded" />
             <div>
               <h4 className="text-lg font-semibold">{item.name}</h4>
-              <p className="text-gray-600">Qty: {item.qty}</p>
-              <p className="text-orange-500 font-bold">${item.price}</p>
+
+              {/* Quantity Controls */}
+              <div className="flex items-center gap-2 mt-2">
+                <button
+                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                  className="bg-gray-200 px-2 py-1 rounded hover:bg-gray-300 text-xl"
+                >
+                  −
+                </button>
+                <span className="text-md font-medium">{item.quantity}</span>
+                <button
+                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                  className="bg-gray-200 px-2 py-1 rounded hover:bg-gray-300 text-xl"
+                >
+                  +
+                </button>
+              </div>
+
+              <p className="text-orange-500 font-bold mt-2">${item.price}</p>
             </div>
           </div>
+
           <button
             onClick={() => removeFromCart(item.id)}
-            className="text-red-500 hover:underline"
+            className="text-red-500 hover:text-red-700 text-xl"
           >
-            Remove
+            <FiTrash2 />
           </button>
         </div>
       ))}
