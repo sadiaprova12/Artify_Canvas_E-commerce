@@ -1,6 +1,7 @@
 import { useCart } from "../../context/CartContext";
 import { FaStar, FaRegHeart, FaHeart } from "react-icons/fa"; // Icons for rating and wishlist
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
@@ -63,12 +64,14 @@ const ProductCard = ({ product }) => {
 
 
       {/* View Details Button */}
-      <button
-        className="mt-3 w-full bg-orange-600 text-white py-2 rounded hover:bg-orange-700 transition"
-        onClick={() => alert("Navigate to product details")}
-      >
-        View Details
-      </button>
+      <Link to={`/product/${product.id}`}>
+  <button
+    className="mt-3 w-full bg-orange-600 text-white py-2 rounded hover:bg-orange-700 transition"
+  >
+    View Details
+  </button>
+</Link>
+
     </div>
   );
 };
