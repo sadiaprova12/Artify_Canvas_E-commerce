@@ -11,10 +11,11 @@ const Navbar = () => {
   const { cartItems } = useCart();
 
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <header className="bg-white shadow-md dark:bg-gray-900 dark:text-white">
-      <div className="flex items-center justify-between px-4 py-3 border-b dark:border-gray-700 relative">
+      <div className="flex items-center justify-between px-12 py-3 border-b dark:border-gray-700 relative">
         {/* Left: Logo + Hamburger */}
         <div className="flex items-center space-x-4">
           {/* Hamburger (Mobile) */}
@@ -27,7 +28,7 @@ const Navbar = () => {
 
           {/* Logo */}
           <div className="text-2xl font-bold text-orange-600">ArtCanvas</div>
-        </div>
+          </div>
 
         {/* Center: Delivery + Search Bar (Hidden on mobile) */}
         <div className="hidden sm:flex flex-col sm:flex-row sm:items-center sm:space-x-4 w-full max-w-3xl">
@@ -66,7 +67,7 @@ const Navbar = () => {
               onChange={(e) => setSearch(e.target.value)}
               className="flex-grow px-3 py-2 border-t border-b border-gray-300 focus:outline-none dark:bg-gray-800 dark:border-gray-700"
             />
-            <button className="bg-orange-600 p-2 rounded-r-md text-white">
+            <button className="bg-orange-600 p-4 rounded-r-md text-white">
               <FaSearch />
             </button>
           </div>
@@ -75,14 +76,14 @@ const Navbar = () => {
         {/* Right: Account + Cart (Always visible) */}
         <div className="flex items-center space-x-4 text-sm">
           <div className="relative group hidden sm:block">
-            <div className="flex flex-col items-start cursor-pointer">
-              <span className="text-gray-500 dark:text-gray-300">Hello, Sign in</span>
+            <div className="flex flex-col items-start cursor-pointer group-hover:border border-orange-800 p-2">
+              <span className="text-gray-500 dark:text-gray-300 ">Hello, Sign in</span>
               <span className="font-bold flex items-center gap-1">
                 Account & Lists <FaAngleDown className="text-orange-600" />
               </span>
             </div>
             {/* Dropdown */}
-            <div className="absolute top-12 left-0 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+            <div className="absolute top-15 left-0 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-30 ">
               <ul className="py-2 text-sm">
                 <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">Sign In</li>
                 <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">Register</li>
@@ -90,7 +91,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="hidden sm:flex flex-col cursor-pointer">
+          <div className="hidden sm:flex flex-col cursor-pointer group-hover:border border-orange-800 p-2">
             <span className="text-gray-500 dark:text-gray-300">Returns</span>
             <span className="font-bold">& Orders</span>
           </div>

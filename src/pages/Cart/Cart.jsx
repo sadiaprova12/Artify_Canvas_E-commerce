@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { FiTrash2 } from 'react-icons/fi';
 
@@ -56,9 +57,12 @@ const Cart = () => {
 
       <div className="mt-6 text-right">
         <h3 className="text-xl font-bold">Total: ${getTotal()}</h3>
+        <Link to="/checkout">
         <button className="mt-4 bg-orange-500 text-white px-6 py-3 rounded hover:bg-orange-600">
           Proceed to Checkout
         </button>
+        </Link>
+        
       </div>
     </div>
   );
