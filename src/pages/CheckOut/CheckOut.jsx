@@ -1,76 +1,111 @@
 import { useCart } from '../../context/CartContext';
-import { FiTrash2, FiArrowRight } from 'react-icons/fi';
-import { FaCartPlus, FaPaypal } from 'react-icons/fa';
+import { FiTrash2 } from 'react-icons/fi';
+import { FaPaypal, FaCcVisa, FaCcMastercard } from 'react-icons/fa';
 
 const Checkout = () => {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
+
+  const getSubtotal = () => {
+  return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+};
+
+const shippingCharge = 10; // Flat rate shipping
+const taxRate = 0.1; // 10%
+const discountRate = 0.05; // 5%
+
+const subtotal = getSubtotal();
+const tax = subtotal * taxRate;
+const discount = subtotal * discountRate;
+const total = subtotal + shippingCharge + tax - discount;
+
 
   const getTotal = () => {
     return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 md:px-20 lg:px-40">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-
-        {/* Left Column */}
+    <div className="min-h-screen bg-white py-10 px-4 md:px-10 lg:px-20">
+      <h1 className="text-3xl font-bold mb-8">CanvasCraft</h1>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        {/* First Column */}
         <div className="space-y-6">
-          {/* Logo */}
-          <div className="text-center text-2xl font-bold text-orange-600">CanvasCraft</div>
+          <h2 className="text-2xl font-semibold">Checkout</h2>
 
-          {/* Express Checkout */}
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Express Checkout</h3>
-            <button className="flex items-center justify-center gap-2 bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">
-              <FaPaypal /> Pay with PayPal
-            </button>
-          </div>
-
-          {/* Email Section */}
-          <div className="bg-white p-4 rounded shadow space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 flex items-center justify-center border rounded-full font-bold">1</div>
-              <p className="text-md font-semibold">Enter Your Email</p>
+          {/* Customer Details */}
+          <div className="space-y-4">
+            <p className="font-semibold text-lg">Customer Details</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" placeholder="First Name *" className="p-2 border rounded" />
+              <input type="text" placeholder="Last Name *" className="p-2 border rounded" />
+              <input type="email" placeholder="Email *" className="p-2 border rounded col-span-2" />
+              <div className="flex border rounded overflow-hidden col-span-2">
+                <select className="px-2 bg-gray-100">
+                  <option value="IN">IN</option>
+                  <option value="US">US</option>
+                  <option value="UK">UK</option>
+                </select>
+                <input type="text" placeholder="00000 00000" className="flex-1 p-2 outline-none" />
+              </div>
             </div>
-            <p className="text-sm text-gray-500">New customer? Receive 10% off your first order. Already have an account? You'll be prompted to log in.</p>
-            <div className="flex items-center border border-gray-300 rounded overflow-hidden">
-              <input type="email" placeholder="Enter your email" className="flex-grow p-2 outline-none" />
-              <button className="bg-orange-500 text-white p-2">
-                <FiArrowRight />
-              </button>
+            <p className="text-sm text-gray-600 pt-2">New customer? Receive 10% off your first order. Already have an account? You'll be prompted to log in.</p>
+            <p className="text-sm text-gray-600">By providing your email, you agree to our Privacy Policy and Terms of Service.</p>
+          </div>
+
+          {/* Shipping Details */}
+          <div className="space-y-4">
+            <p className="font-semibold text-lg">Shipping Details</p>
+            <input type="text" placeholder="Street Address *" className="w-full p-2 border rounded" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <input type="text" placeholder="Postal Code *" className="p-2 border rounded" />
+              <input type="text" placeholder="City *" className="p-2 border rounded" />
+              <select className="p-2 border rounded">
+                <option value="India">Bangladesh</option>
+                <option value="India">India</option>
+                <option value="USA">USA</option>
+                <option value="UK">UK</option>
+              </select>
             </div>
-            <p className="text-xs text-gray-400">By providing your email, you agree to our <a href="#" className="text-orange-500 underline">Privacy Policy</a> and <a href="#" className="text-orange-500 underline">Terms of Service</a>.</p>
           </div>
 
-          {/* Step 2: Shipping */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 flex items-center justify-center border rounded-full font-bold">2</div>
-            <p className="text-md font-semibold">Shipping</p>
-          </div>
-
-          {/* Step 3: Payment Method */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 flex items-center justify-center border rounded-full font-bold">3</div>
-            <p className="text-md font-semibold">Payment Method</p>
+          {/* Payment Method */}
+          <div className="space-y-4">
+            <p className="font-semibold text-lg">Payment Method</p>
+            <div className="flex gap-4 flex-wrap">
+              <label className="flex items-center gap-2">
+                <input type="radio" name="payment" />
+                <FaPaypal className="text-blue-600" />
+                PayPal
+              </label>
+              <label className="flex items-center gap-2">
+                <input type="radio" name="payment" />
+                <FaCcVisa className="text-blue-800" />
+                <FaCcMastercard className="text-red-600" />
+                Credit or Debit Card
+              </label>
+              <label className="flex items-center gap-2">
+                <input type="radio" name="payment" />
+                COD
+              </label>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <input type="text" placeholder="Card Number *" className="p-2 border rounded col-span-2" />
+              <input type="text" placeholder="Expiry Date *" className="p-2 border rounded" />
+              <input type="text" placeholder="CVV *" className="p-2 border rounded" />
+            </div>
           </div>
         </div>
 
-        {/* Right Column - Cart Summary */}
+        {/* Second Column - Order Summary */}
         <div className="bg-white p-6 rounded shadow space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <FaCartPlus className="text-xl" />
-              <span>Cart ({cartItems.length})</span>
-            </div>
-            <div className="font-bold text-orange-600 text-lg">${getTotal()}</div>
-          </div>
+          <h3 className="text-lg font-semibold">Cart ({cartItems.length})</h3>
 
           {cartItems.map((item) => (
             <div key={item.id} className="flex items-center justify-between border-b py-3">
               <div className="flex items-center gap-4">
-                <img src={item.image} alt={item.name} className="w-14 h-14 object-cover rounded" />
+                <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
                 <div>
                   <h4 className="text-md font-semibold">{item.name}</h4>
+                  <p>${item.price.toFixed(2)}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="px-2 bg-gray-200 rounded hover:bg-gray-300">-</button>
                     <span>{item.quantity}</span>
@@ -84,25 +119,34 @@ const Checkout = () => {
             </div>
           ))}
 
-          <div className="pt-4">
-            <input type="text" placeholder="Gift or Promo Code" className="w-full p-2 border rounded mb-2" />
-            <button className="w-full bg-gray-800 text-white py-2 rounded hover:bg-black">Apply</button>
-          </div>
+          <input type="text" placeholder="Gift or Promo Code" className="w-full p-2 border rounded" />
+          <button className="w-full bg-black text-white py-2 rounded hover:bg-gray-800">Apply</button>
 
           <div className="pt-4 border-t text-sm text-gray-600 space-y-2">
-            <div className="flex justify-between">
-              <span>Subtotal</span>
-              <span>${getTotal()}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Estimated Shipping</span>
-              <span>Free</span>
-            </div>
-            <div className="flex justify-between font-bold text-md text-black">
-              <span>Total</span>
-              <span>${getTotal()}</span>
-            </div>
-          </div>
+  <div className="flex justify-between">
+    <span>Subtotal</span>
+    <span>${getSubtotal().toFixed(2)}</span>
+  </div>
+  <div className="flex justify-between">
+    <span>Shipping Charge</span>
+    <span>${shippingCharge.toFixed(2)}</span>
+  </div>
+  <div className="flex justify-between">
+    <span>Tax (10%)</span>
+    <span>${tax.toFixed(2)}</span>
+  </div>
+  <div className="flex justify-between text-green-600">
+    <span>Discount (5%)</span>
+    <span>- ${discount.toFixed(2)}</span>
+  </div>
+  <div className="flex justify-between font-bold text-md text-black border-t pt-2">
+    <span>Total</span>
+    <span>${total.toFixed(2)}</span>
+  </div>
+</div>
+
+
+          <button className="w-full bg-black text-white py-3 rounded hover:bg-gray-900">Place Order</button>
         </div>
       </div>
     </div>
