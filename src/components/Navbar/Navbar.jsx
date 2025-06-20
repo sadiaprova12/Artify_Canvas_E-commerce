@@ -2,6 +2,8 @@ import { useState } from "react";
 import { FaMapMarkerAlt, FaSearch, FaShoppingCart, FaAngleDown, FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import { FaHeart } from "react-icons/fa";
+
 
 const Navbar = () => {
   const [country, setCountry] = useState("Bangladesh");
@@ -95,6 +97,11 @@ const Navbar = () => {
             <span className="text-gray-500 dark:text-gray-300">Returns</span>
             <span className="font-bold">& Orders</span>
           </div>
+
+          {/* Wishlist */}
+<Link to="/wishlist" className="relative cursor-pointer">
+  <FaHeart className="text-2xl text-orange-600" />
+</Link>
 
           <Link to="/cart" className="relative cursor-pointer">
             <FaShoppingCart className="text-2xl text-orange-600" />
